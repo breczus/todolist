@@ -14,13 +14,13 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(express.static("public"));
 
-mongoose.connect('mongodb://localhost:27017/todolistDB', {
+mongoose.connect('mongodb+srv://admin-michal:admin@cluster0.6wgff.mongodb.net/todolistDB', {
     useNewUrlParser: true,
     useUnifiedTopology: true
   })
   .then(() => console.log('MongoDB Connected...'))
   .catch((err) => console.log(err))
-
+mongoose.set('useFindAndModify', false);
 const itemsSchema = {
   name: String
 };
@@ -82,6 +82,7 @@ app.post("/", function(req, res) {
   if (listName === "Today"){
     item.save();
     res.redirect("/");
+    
   } else{
     List.findOne({name:listName}, function(err, foundList){
       foundList.items.push(item);
